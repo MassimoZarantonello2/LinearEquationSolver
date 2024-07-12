@@ -45,23 +45,23 @@ for A in matrices:
         for method in methods:
             f.write(f'{matrices_path[j]}_{method}_{method_iterations[method]}\n')
 
-    # # Plotting
-    # for method in methods:
-    #     plt.plot(plot_tollerances, method_times[method], label=method)
-    # plt.xlabel('Tollerance')
-    # plt.ylabel('Time')
-    # plt.title(f'Matrix {matrices_path[j]}')
-    # plt.legend()
-    # plt.savefig(f'plots/{matrices_path[j]}_time.png')
-    # plt.clf()
+    # Plotting
+    for method in methods:
+        plt.plot(plot_tollerances, method_times[method], label=method)
+    plt.xlabel('Tollerance')
+    plt.ylabel('Time')
+    plt.title(f'Matrix {matrices_path[j]}')
+    plt.legend()
+    plt.savefig(f'plots/{matrices_path[j]}_time.png')
+    plt.clf()
 
-    # for method in methods:
-    #     plt.plot(plot_tollerances, method_iterations[method], label=method)
-    # plt.xlabel('Tollerance')
-    # plt.ylabel('Iterations')
-    # plt.title(f'Matrix {matrices_path[j]}')
-    # plt.legend()
-    # plt.savefig(f'plots/{matrices_path[j]}_iterations.png')
-    # plt.clf()
+    for method in methods:
+        plt.plot(plot_tollerances, method_iterations[method], label=method)
+    plt.xlabel('Tollerance')
+    plt.ylabel('Iterations')
+    plt.title(f'Matrix {matrices_path[j]}')
+    plt.legend()
+    plt.savefig(f'plots/{matrices_path[j]}_iterations.png')
+    plt.clf()
 
-    # j += 1
+    j += 1
