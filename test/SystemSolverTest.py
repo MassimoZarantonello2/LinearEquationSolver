@@ -7,18 +7,23 @@ sys.path.append('library')
 import LinearSystemSolvers.LinearSystemSolver as lss
 import matplotlib.pyplot as plt
 
+def write_results(filename, data):
+    with open(f'test/{filename}', 'a+') as f:
+        f.write(f'{data}\n')
+
+def plot_results(x, y, title, xlabel, ylabel, filename):
+
+
 matrices_path = os.listdir("matrici")
 matrices = []
 for m in matrices_path:
     matrices.append(mmread("matrici/"+m).toarray())
 
 methods = ["jacobi", "gauss_seidel", "gradient", "conjugate_gradient"]
-plot_tollerances = ['1e-4', '1e-5', '1e-6', '1e-7', '1e-8', '1e-9', '1e-10']
+plot_tollerances = ['1e-4', '1e-6', '1e-8', '1e-10']
 
-tollerances = [1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9, 1e-10]
-max_iterations = 20000
-
-matrices = [matrices[0]]
+tollerances = [1e-4, 1e-6, 1e-8, 1e-10]
+max_iterations = 30000
 
 j = 0
 for A in matrices:
@@ -26,18 +31,21 @@ for A in matrices:
     method_times = {}
     method_iterations = {}
     method_memory = {}
+    method_errors = {}
     
     for method in methods:
+        index = f'{matrices_path[j]}_{method}'       
         times = []
         iterations = []
         memory_usage = []
+        errors = []
         
         for tollerance in tollerances:
             print(f'Running {method} on matrix {A.shape[0]}x{A.shape[1]} with tollerance {tollerance}')
             
             tracemalloc.start()
             
-            x, k, time = lss.solve(A, b, tollerance, max_iterations, method=method)
+            x, k, time, tollerance = lss.solve(A, b, tollerance, max_iterations, method=method)
             
             current, peak = tracemalloc.get_traced_memory()
             tracemalloc.stop()
@@ -45,19 +53,18 @@ for A in matrices:
             times.append(time)
             iterations.append(k)
             memory_usage.append(peak)
+            errors.append(tollerance)
         
-        method_times[method] = times
-        method_iterations[method] = iterations
-        method_memory[method] = memory_usage
+        method_times[index] = times
+        method_iterations[index] = iterations
+        method_memory[index] = memory_usage
+        method_errors[index] = tollerances
     
-    with open(f'test/results_times.txt', 'a+') as f:
-        for method in methods:
-            f.write(f'{matrices_path[j]}_{method}_{method_times[method]}\n')
+    for method in methods:
+        index = f'{matrices_path[j]}_{method}'
+        write_results("plots/times.txt", f'{index} {method_times[index]}')
+        write_results("plots/iterations.txt", f'{index} {method_iterations[index]}')
+        write_results("plots/memory.txt", f'{index} {method_memory[index]}')
+        write_results("plots/errors.txt", f'{index} {method_errors[index]}')
 
-    with open(f'test/results_iterations.txt', 'a+') as f:
-        for method in methods:
-            f.write(f'{matrices_path[j]}_{method}_{method_iterations[method]}\n')
-
-    with open(f'test/results_memory.txt', 'a+') as f:
-        for method in methods:
-            f.write(f'{matrices_path[j]}_{method}_{method_memory[method]}\n')
+    j += 1

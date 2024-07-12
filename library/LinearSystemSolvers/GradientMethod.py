@@ -32,8 +32,10 @@ def solve(A, b, x_0, tol, max_iter):
         alpha_k = alpha / beta
         x_new = x + alpha_k * r
 
-        if np.linalg.norm(x_new - x) < tol:
-            return x_new, k
+        tollerance = np.linalg.norm(r) / np.linalg.norm(b)
+        if tollerance < tol:
+            return x_new, k, tollerance
         
         x = x_new
 
+    raise Exception("Metodo del Gradiente non converge dopo il numero massimo di iterazioni")

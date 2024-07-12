@@ -30,17 +30,15 @@ def solve(A, b, x_0, tol, max_iterations):
         Vettore soluzione.   
     '''
     n = A.shape[0]
-    if x_0 is None:
-        x = np.zeros(n)
-    
     x = x_0
-    x_new = np.zeros(n)
+
     for k in range(max_iterations):
         r = b - np.dot(A, x)
         y = forward_substitution(np.tril(A), r)
         x_new = x + y
-        if np.linalg.norm(x_new - x) < tol:
-            return x_new
+        tollerance = np.linalg.norm(r) / np.linalg.norm(b)
+        if tollerance < tol:
+            return x_new, k, tollerance
         
         x = x_new
     

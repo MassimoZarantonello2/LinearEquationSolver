@@ -14,14 +14,14 @@ def solve(A, b, tol, max_iter, method, x_0=None):
 
     start = time.time()
     if method == 'jacobi':
-        x, k = jm.solve(A, b, x_0, tol, max_iter)
+        x, k, error = jm.solve(A, b, x_0, tol, max_iter)
     elif method == 'gauss_seidel':
-        x, k = gsm.solve(A, b, x_0, tol, max_iter)
+        x, k, error = gsm.solve(A, b, x_0, tol, max_iter)
     elif method == 'gradient':
-        x, k = gm.solve(A, b, x_0, tol, max_iter)
+        x, k, error = gm.solve(A, b, x_0, tol, max_iter)
     elif method == 'conjugate_gradient':
-        x, k = cgm.solve(A, b, x_0, tol, max_iter)
+        x, k, error = cgm.solve(A, b, x_0, tol, max_iter)
     else:
         raise ValueError(f'Method {method} not supported')
     end = time.time()
-    return x, k, end-start
+    return x, k, end-start, error

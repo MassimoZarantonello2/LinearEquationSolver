@@ -18,9 +18,9 @@ def solve(input_matrix, b, x_0, tol, max_iterations):
     for k in range(max_iterations):
         r = b - np.dot(input_matrix, x)
         x_new = x + np.dot(P_inv, r)
-        
-        if np.linalg.norm(x_new - x) < tol:
-            return x_new, k
+        tollerance = np.linalg.norm(r) / np.linalg.norm(b)
+        if tollerance < tol:
+            return x_new, k, tollerance
         
         x = x_new
     
