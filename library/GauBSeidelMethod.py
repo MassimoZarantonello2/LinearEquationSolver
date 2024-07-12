@@ -1,6 +1,6 @@
 import numpy as np
 
-def gauss_seidel_method(A, b, x0=None, tol=1e-10, max_iterations=1000):
+def solve(A, b, x0, tol, max_iterations):
     n = A.shape[0]
     
     if x0 is None:

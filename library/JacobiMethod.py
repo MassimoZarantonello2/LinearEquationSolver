@@ -1,6 +1,6 @@
 import numpy as np
 
-def jacobi_method(input_matrix, b, x0=None, tol=1e-10, max_iterations=1000):
+def solve(input_matrix, b, x_0, tol, max_iterations):
     '''
     Utilizza il metodo di Jacobi per risolvere il sistema lineare Ax = b.\n
     -----
@@ -11,16 +11,9 @@ def jacobi_method(input_matrix, b, x0=None, tol=1e-10, max_iterations=1000):
     - `tol`: tolleranza per il criterio di arresto (opzionale) di default 1e-10
     - `max_iterations`: numero massimo di iterazioni (opzionale) di default 1000
     '''
-    n = input_matrix.shape[0]
-    if x0 is None:
-        x = np.zeros(n)
-    else:
-        x = x0
-
     P_inv = np.diag(1 / np.diag(input_matrix))
     A = input_matrix
-
-    print(A)
+    x = x_0
     
     for k in range(max_iterations):
         r = b - np.dot(input_matrix, x)

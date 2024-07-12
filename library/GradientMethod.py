@@ -1,6 +1,6 @@
 import numpy as np
 
-def gradient_method(A, b, x0, tol=1e-8, max_iter=1000):
+def solve(A, b, x_0, tol, max_iter):
     """
     Risolve il sistema lineare Ax = b usando il metodo del gradiente.
     
@@ -22,15 +22,16 @@ def gradient_method(A, b, x0, tol=1e-8, max_iter=1000):
     k : int
         Numero di iterazioni eseguite.
     """
-    x = x0
-    r = b - A @ x
-    k = 0
-    
-    while np.linalg.norm(r) > tol and k < max_iter:
-        Ar = A @ r
-        alpha_k = (r.T @ r) / (r.T @ Ar)
-        x = x + alpha_k * r
-        r = b - A @ x
-        k += 1
-    
-    return x, k
+    x = x_0
+    for k in range(max_iter):
+        r = b - np.dot(A, x)
+        y = np.dot(A, r)
+        alpha = np.dot(r.T, r)
+        beta = np.dot(r.T, y)
+
+        alpha_k = alpha / beta
+        x_new = x + alpha_k * r
+        if np.linalg.norm(x_new - x, np.inf) < tol:
+            return x_new, k
+        x = x_new
+
