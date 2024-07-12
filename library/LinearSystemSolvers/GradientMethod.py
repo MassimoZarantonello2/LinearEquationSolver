@@ -31,7 +31,9 @@ def solve(A, b, x_0, tol, max_iter):
 
         alpha_k = alpha / beta
         x_new = x + alpha_k * r
-        if np.linalg.norm(x_new - x, np.inf) < tol:
+
+        if np.linalg.norm(x_new - x) < tol:
             return x_new, k
+        
         x = x_new
 

@@ -19,7 +19,7 @@ def solve(input_matrix, b, x_0, tol, max_iterations):
         r = b - np.dot(input_matrix, x)
         x_new = x + np.dot(P_inv, r)
         
-        if np.linalg.norm(x_new - x, np.inf) < tol:
+        if np.linalg.norm(x_new - x) < tol:
             return x_new, k
         
         x = x_new

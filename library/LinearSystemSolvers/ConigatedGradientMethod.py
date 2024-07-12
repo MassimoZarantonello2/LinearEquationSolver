@@ -9,7 +9,7 @@ def solve(A, b, x_0, tol, max_iter):
         alpha = np.dot(d, r) / np.dot(d, y)
         x_new = x + alpha * d
 
-        if np.linalg.norm(x_new - x, np.inf) < tol:
+        if np.linalg.norm(x_new - x) < tol:
             return x_new, k
 
         r_new = b - np.dot(A, x_new)

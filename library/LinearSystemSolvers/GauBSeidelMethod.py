@@ -1,22 +1,47 @@
 import numpy as np
 
-def solve(A, b, x0, tol, max_iterations):
-    n = A.shape[0]
+def forward_substitution(L, b):
+    n = L.shape[0]
+    y = np.zeros(n)
     
-    if x0 is None:
-        x = np.zeros(n)
-    else:
-        x = x0
+    for i in range(n):
+        y[i] = (b[i] - np.dot(L[i, :i], y[:i])) / L[i, i]
+    
+    return y
 
+def solve(A, b, x_0, tol, max_iterations):
+    '''
+    Risolve il sistema lineare Ax = b usando il metodo di Gauss-Seidel.
+
+    Parametri:
+    'A' : numpy.ndarray
+        Matrice quadrata.
+    'b' : numpy.ndarray
+        Vettore termine noto.
+    'x_0' : numpy.ndarray, opzionale
+        Vettore iniziale (default: vettore nullo).
+    'tol' : float   
+        Tolleranza per il criterio di arresto.
+    'max_iterations' : int  
+        Numero massimo di iterazioni.
+
+    Ritorna:
+    'x' : numpy.ndarray
+        Vettore soluzione.   
+    '''
+    n = A.shape[0]
+    if x_0 is None:
+        x = np.zeros(n)
+    
+    x = x_0
+    x_new = np.zeros(n)
     for k in range(max_iterations):
-        x_old = np.copy(x)
+        r = b - np.dot(A, x)
+        y = forward_substitution(np.tril(A), r)
+        x_new = x + y
+        if np.linalg.norm(x_new - x) < tol:
+            return x_new
         
-        for i in range(n):
-            sum1 = sum(A[i, j] * x[j] for j in range(i))
-            sum2 = sum(A[i, j] * x_old[j] for j in range(i + 1, n))
-            x[i] = (b[i] - sum1 - sum2) / A[i, i]
-        
-        if np.linalg.norm(x - x_old) < tol:
-            return x, k
+        x = x_new
     
     raise Exception("Metodo di Gauss-Seidel non converge dopo il numero massimo di iterazioni")

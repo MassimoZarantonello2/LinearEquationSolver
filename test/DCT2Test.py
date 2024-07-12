@@ -5,8 +5,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import time
-from scipy.fftpack import dct, idct
-import random
+from scipy.fftpack import dct
 
 matrix_dimension = 50
 matrix_dimensions = []
