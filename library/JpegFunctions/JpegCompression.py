@@ -45,6 +45,8 @@ def jpeg_compression(input_image, F, d):
             compressed_image[i*F:(i+1)*F, j*F:(j+1)*F] = compressed_block
             count += 1
     
+    # Normalizzo l'immagine compressa in modo che i valori siano compresi tra 0 e 255
+    compressed_image = compressed_image + 128
     return compressed_image
 
 if __name__ == '__main__':
