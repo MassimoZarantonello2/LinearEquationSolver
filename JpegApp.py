@@ -29,10 +29,15 @@ def load_image():
 def compress_image():
     global gray_image, img_display
     if gray_image is not None:
-        compressed_image = jc.jpeg_compression(gray_image, 8,4)
-        img_display = ImageTk.PhotoImage(Image.fromarray(compressed_image))
-        compressed_panel.config(image=img_display, width=img_display.width(), height=img_display.height())
-        compressed_panel.image = img_display
+        try:
+            F = int(F_entry.get())
+            d = int(d_entry.get())
+            compressed_image = jc.jpeg_compression(gray_image, F, d)
+            img_display = ImageTk.PhotoImage(Image.fromarray(compressed_image))
+            compressed_panel.config(image=img_display, width=img_display.width(), height=img_display.height())
+            compressed_panel.image = img_display
+        except ValueError:
+            messagebox.showerror("Errore", "F e d devono essere numeri interi")
     else:
         messagebox.showerror("Errore", "Nessuna immagine caricata")
 
@@ -46,6 +51,18 @@ original_panel.pack()
 
 compressed_panel = tk.Label(root, text="Immagine compressa")
 compressed_panel.pack()
+
+# Frame per input F e d
+input_frame = tk.Frame(root)
+input_frame.pack(pady=10)
+
+tk.Label(input_frame, text="F:").grid(row=0, column=0)
+F_entry = tk.Entry(input_frame)
+F_entry.grid(row=0, column=1)
+
+tk.Label(input_frame, text="d:").grid(row=1, column=0)
+d_entry = tk.Entry(input_frame)
+d_entry.grid(row=1, column=1)
 
 # Pulsante per caricare l'immagine
 btn_load = tk.Button(root, text="Carica Immagine", command=load_image)

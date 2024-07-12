@@ -11,7 +11,38 @@ def write_results(filename, data):
     with open(f'test/{filename}', 'a+') as f:
         f.write(f'{data}\n')
 
-def plot_results(x, y, title, xlabel, ylabel, filename):
+def plot_graph(times, iterations, memory, errors, matrix_name, idxs):
+    matrix_name = matrix_name.replace('.mtx', '')
+    for idx in idxs:
+        idx = idx.replace(matrix_name, '')
+    plt.figure(figsize=(10,10))
+    plt.subplot(2, 2, 1)
+    for idx in idxs:
+        plt.plot(plot_tollerances, times[idx], label=idx)
+    plt.xlabel('Tollerance')
+    plt.ylabel('Time')
+    plt.yscale('log')
+    plt.legend()
+
+    plt.subplot(2, 2, 2)
+    for idx in idxs:
+        plt.plot(plot_tollerances, iterations[idx], label=idx)
+    plt.xlabel('Tollerance')
+    plt.ylabel('Iterations')
+    plt.yscale('log')
+    plt.legend()
+
+    plt.subplot(2, 2, 3)
+    for idx in idxs:
+        plt.plot(plot_tollerances, memory[idx], label=idx)
+    plt.xlabel('Tollerance')
+    plt.ylabel('Memory')
+    plt.yscale('log')
+    plt.legend()
+
+    plt.suptitle(f'{matrix_name} results')
+    plt.savefig(f'test/plots/{matrix_name}.png')
+    plt.close()
 
 
 matrices_path = os.listdir("matrici")
@@ -34,7 +65,8 @@ for A in matrices:
     method_errors = {}
     
     for method in methods:
-        index = f'{matrices_path[j]}_{method}'       
+        index = f'{matrices_path[j]}_{method}'
+        index = index.replace('.mtx', '')
         times = []
         iterations = []
         memory_usage = []
@@ -59,12 +91,15 @@ for A in matrices:
         method_iterations[index] = iterations
         method_memory[index] = memory_usage
         method_errors[index] = tollerances
-    
+    idxs = []
     for method in methods:
         index = f'{matrices_path[j]}_{method}'
-        write_results("plots/times.txt", f'{index} {method_times[index]}')
-        write_results("plots/iterations.txt", f'{index} {method_iterations[index]}')
-        write_results("plots/memory.txt", f'{index} {method_memory[index]}')
-        write_results("plots/errors.txt", f'{index} {method_errors[index]}')
+        index = index.replace('.mtx', '')
+        idxs.append(index)
+        write_results("text_results/times.txt", f'{index} {method_times[index]}')
+        write_results("text_results/iterations.txt", f'{index} {method_iterations[index]}')
+        write_results("text_results/memory.txt", f'{index} {method_memory[index]}')
+        write_results("text_results/errors.txt", f'{index} {method_errors[index]}')
 
+    plot_graph(method_times, method_iterations, method_memory ,method_errors, matrices_path[j], idxs)
     j += 1

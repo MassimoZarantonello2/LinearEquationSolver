@@ -15,6 +15,9 @@ def jpeg_compression(input_image, F, d):
     Returns:
     'compressed_image': Immagine compressa.
     """
+    # converto l'immagine in scala di grigi
+    if len(input_image.shape) == 3:
+        input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2GRAY)
     # converto l'immagine in float e la normalizzo in modo che i valori siano compresi tra -128 e 127
     input_image = input_image.astype(float) - 128
     N, M = input_image.shape
