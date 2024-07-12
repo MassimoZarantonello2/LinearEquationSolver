@@ -16,7 +16,7 @@ def solve(A, b, x0, tol, max_iterations):
             sum2 = sum(A[i, j] * x_old[j] for j in range(i + 1, n))
             x[i] = (b[i] - sum1 - sum2) / A[i, i]
         
-        if np.linalg.norm(x - x_old, np.inf) < tol:
+        if np.linalg.norm(x - x_old) < tol:
             return x, k
     
     raise Exception("Metodo di Gauss-Seidel non converge dopo il numero massimo di iterazioni")
