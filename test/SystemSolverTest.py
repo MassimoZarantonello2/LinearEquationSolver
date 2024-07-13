@@ -51,9 +51,9 @@ for m in matrices_path:
     matrices.append(mmread("matrici/"+m).toarray())
 
 methods = ["jacobi", "gauss_seidel", "gradient", "conjugate_gradient"]
-plot_tollerances = ['1e-4', '1e-6', '1e-8', '1e-10']
+plot_tollerances = ['1e-10', '1e-8', '1e-6', '1e-4']
 
-tollerances = [1e-4, 1e-6, 1e-8, 1e-10]
+tollerances = [1e-10, 1e-8, 1e-6, 1e-4]
 max_iterations = 30000
 
 j = 0
