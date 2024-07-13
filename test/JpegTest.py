@@ -36,6 +36,9 @@ def test_jpeg_compression(F, d):
         plt.axis('off')
         plt.savefig(f'test/compressed_images/{print_name}.png')
 
+def test_jpeg_compression_time(d):
+    F = 2
+    smallest_image = cv2.imread('immagini/lena.bmp')
 
 if __name__ == '__main__':
     F = 8
