@@ -41,8 +41,7 @@ def jpeg_compression(input_image, F, d):
             
             dct_block[:F, d:] = 0
             dct_block[d:, :F] = 0
-            
-            # Applico la IDCT2 al blocco
+
             compressed_block = idctalg.IDCT2(dct_block)
             
             # Salvo il blocco compresso nell'immagine compressa
@@ -50,6 +49,5 @@ def jpeg_compression(input_image, F, d):
             count += 1
     
     # Normalizzo l'immagine compressa in modo che i valori siano compresi tra 0 e 255
-    compressed_image = compressed_image + 128
     print('\n')
     return compressed_image

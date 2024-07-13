@@ -39,7 +39,7 @@ def plot_dct2_time_comparison():
     plt.ylabel('Time (s)')
     plt.title('DCT2 time comparison')
     plt.legend()
-    plt.savefig('plots/DCT2_time_comparison.png')
+    plt.savefig('test/plots/new_DCT2_time_comparison.png')
 
 if __name__ == "__main__":
     matrix = [
@@ -60,5 +60,4 @@ if __name__ == "__main__":
     print("\nDCT2 della matrice:")
     print(IDCTsAlgorithms.IDCT2(DCTsAlgorithms.DCT2(matrix)))
 
-    if os.path.exists('plots/DCT2_time_comparison.png') == False:
-        plot_dct2_time_comparison()
+    plot_dct2_time_comparison()

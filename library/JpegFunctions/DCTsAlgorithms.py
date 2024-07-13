@@ -11,17 +11,32 @@ def DCT(x):
     numpy array: Vettore contenente la DCT di x.
     """
     N = len(x)
-    X = np.zeros(N)
-    for k in range(N):
-        sum_value = 0
-        for n in range(N):
-            sum_value += x[n] * np.cos(np.pi * k * (2*n + 1) / (2 * N))
-        if k == 0:
-            alpha_k = np.sqrt(1/N)
-        else:
-            alpha_k = np.sqrt(2/N)
-        X[k] = alpha_k * sum_value
+    cosine_matrix = np.cos(np.pi * np.outer(np.arange(N), (np.arange(N) * 2 + 1) / (2 * N)))
+    alpha = np.sqrt(2 / N) * np.ones(N)
+    alpha[0] = np.sqrt(1 / N)
+    
+    X = alpha * np.dot(cosine_matrix, x)
+    
     return X
+
+def IDCT(X):
+    """
+    Calcola l'inversa della trasformata discreta del coseno (IDCT) di un vettore X.
+    
+    Parameters:
+    X (numpy array): Vettore di input di lunghezza N.
+    
+    Returns:
+    numpy array: Vettore contenente l'IDCT di X.
+    """
+    N = len(X)
+    cosine_matrix = np.cos(np.pi * np.outer(np.arange(N), (np.arange(N) * 2 + 1) / (2 * N)))
+    alpha = np.sqrt(2 / N) * np.ones(N)
+    alpha[0] = np.sqrt(1 / N)
+    
+    x = np.dot(cosine_matrix.T, alpha * X)
+    
+    return x
 
 def DCT2(x):
     """
@@ -34,14 +49,23 @@ def DCT2(x):
     numpy array: Matrice contenente la DCT2 di x.
     """
     N, M = x.shape
-    X = np.zeros((N, M))
-    
-    # Applicare la DCT a ogni riga della matrice
-    for i in range(N):
-        X[i, :] = DCT(x[i, :])
-    
-    # Applicare la DCT a ogni colonna della matrice risultante
-    for j in range(M):
-        X[:, j] = DCT(X[:, j])
+    X = np.apply_along_axis(DCT, 1, x)
+    X = np.apply_along_axis(DCT, 0, X)
     
     return X
+
+def IDCT2(X):
+    """
+    Calcola l'inversa della trasformata discreta del coseno bidimensionale (IDCT2) di una matrice X.
+    
+    Parameters:
+    X (numpy array): Matrice di input di dimensioni (N, M).
+    
+    Returns:
+    numpy array: Matrice contenente l'IDCT2 di X.
+    """
+    N, M = X.shape
+    x = np.apply_along_axis(IDCT, 1, X)
+    x = np.apply_along_axis(IDCT, 0, x)
+    
+    return x

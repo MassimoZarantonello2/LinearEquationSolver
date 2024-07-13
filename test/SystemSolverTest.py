@@ -7,10 +7,6 @@ sys.path.append('library')
 import LinearSystemSolvers.LinearSystemSolver as lss
 import matplotlib.pyplot as plt
 
-def write_results(filename, data):
-    with open(f'test/{filename}', 'a+') as f:
-        f.write(f'{data}\n')
-
 def plot_graph(times, iterations, memory, errors, matrix_name, idxs):
     matrix_name = matrix_name.replace('.mtx', '')
     for idx in idxs:
@@ -92,14 +88,6 @@ for A in matrices:
         method_memory[index] = memory_usage
         method_errors[index] = tollerances
     idxs = []
-    for method in methods:
-        index = f'{matrices_path[j]}_{method}'
-        index = index.replace('.mtx', '')
-        idxs.append(index)
-        write_results("text_results/times.txt", f'{index} {method_times[index]}')
-        write_results("text_results/iterations.txt", f'{index} {method_iterations[index]}')
-        write_results("text_results/memory.txt", f'{index} {method_memory[index]}')
-        write_results("text_results/errors.txt", f'{index} {method_errors[index]}')
 
     plot_graph(method_times, method_iterations, method_memory ,method_errors, matrices_path[j], idxs)
     j += 1
