@@ -42,8 +42,8 @@ Nella cartella principale è presente un file chiamato `JpegApp.py`. Questo scri
 
 1. Clona il repository:
    ```bash
-   git clone git@github.com:MassimoZarantonello2/LinearEquationSolver.git
-   cd progetto-calcolo-scientifico
+   git clone git@github.com:MassimoZarantonello2/ProgettoCalcoloScientifico.git
+   cd ProgettoCalcoloScientifico
    ```
 
-Per ulteriori informazioni, fare riferimento alla documentazione inclusa nei singoli script.
+Per ulteriori informazioni, fare riferimento alla documentazione.
