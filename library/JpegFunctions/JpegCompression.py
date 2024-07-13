@@ -1,7 +1,8 @@
 import cv2
 import matplotlib.pyplot as plt
-import DCTsAlghorithms as dctalg
-import os
+import DCTsAlgorithms as dctalg
+import IDCTsAlgorithms as idctalg
+
 
 def jpeg_compression(input_image, F, d):
     """
@@ -27,9 +28,12 @@ def jpeg_compression(input_image, F, d):
     
     compressed_image = input_image.copy()
     count = 0
+    total_blocks = n_blocks**2
     
     for i in range(n_blocks):
         for j in range(n_blocks):
+            progress = (count/total_blocks)*100
+            print(f'Compression progress: {round(progress,2)}%', end='\r')
             # Estraggo il blocco di dimensione FxF
             block = input_image[i*F:(i+1)*F, j*F:(j+1)*F]
             # Applico la DCT2 al blocco
@@ -39,7 +43,7 @@ def jpeg_compression(input_image, F, d):
             dct_block[d:, :F] = 0
             
             # Applico la IDCT2 al blocco
-            compressed_block = dctalg.IDCT2(dct_block)
+            compressed_block = idctalg.IDCT2(dct_block)
             
             # Salvo il blocco compresso nell'immagine compressa
             compressed_image[i*F:(i+1)*F, j*F:(j+1)*F] = compressed_block
@@ -47,18 +51,5 @@ def jpeg_compression(input_image, F, d):
     
     # Normalizzo l'immagine compressa in modo che i valori siano compresi tra 0 e 255
     compressed_image = compressed_image + 128
+    print('\n')
     return compressed_image
-
-if __name__ == '__main__':
-    image_path = "immagini/"
-    image_names = os.listdir(image_path)
-    images_path = [image_path + image_name for image_name in image_names]
-    images = [cv2.imread(image_path) for image_path in images_path]
-
-    for i, image in enumerate(images):
-        print(f"Compressing image {image_names[i]}")
-        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        compressed_image = jpeg_compression(gray_image, 8, 4)
-
-        plt.figure()
-        plt.imsave(f'compressed_images/{image_names[i]}_compressed.png', compressed_image, cmap='gray')
